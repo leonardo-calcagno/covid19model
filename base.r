@@ -16,8 +16,10 @@ parser <- add_option(parser, c("-D", "--debug"), action="store_true",
                      help="Perform a debug run of the model")
 parser <- add_option(parser, c("-F", "--full"), action="store_true",
                      help="Perform a full run of the model")
-cmdoptions <- parse_args(parser, args = commandArgs(trailingOnly = TRUE), positional_arguments = TRUE)
 
+cmdoptions <- parse_args(parser, args = commandArgs(trailingOnly = TRUE), positional_arguments = TRUE)
+#Changed cmdoptions to run in Debug mode. Else, comment it out.
+#cmdoptions$options$debug<- TRUE
 # Default run parameters for the model
 if(is.null(cmdoptions$options$debug)) {
   DEBUG = Sys.getenv("DEBUG") == "TRUE"
@@ -35,12 +37,12 @@ if(DEBUG && FULL) {
   stop("Setting both debug and full run modes at once is invalid")
 }
 
+
 if(length(cmdoptions$args) == 0) {
   StanModel = 'base'
 } else {
   StanModel = cmdoptions$args[1]
 }
-
 print(sprintf("Running %s",StanModel))
 if(DEBUG) {
   print("Running in DEBUG mode")
@@ -58,7 +60,7 @@ ifr.by.country <- read_ifr_data()
 # Read interventions
 interventions <- read_interventions(countries)
 
-N2 <- 100 # increase if you need more forecast
+N2 <- 115 # increase if you need more forecast
 
 processed_data <- process_covariates(countries = countries, interventions = interventions, 
                                      d = d , ifr.by.country = ifr.by.country, N2 = N2)
